@@ -1,0 +1,23 @@
+@import '~rsuite/dist/rsuite.min.css';
+
+// Global styles
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #333;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+// Create a proper folder structure for your SCSS
+// src/
+//  ├── styles/
+//  │   ├── _variables.scss
+//  │   ├── _mixins.scss
+//  │   ├── _animations.scss
+//  │   └── _utilities.scss
+//  └── App.scss (imports the above)

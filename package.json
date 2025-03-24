@@ -10,7 +10,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "highcharts": "^12.1.2",
+    "highcharts-react-official": "^3.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rsuite": "^5.78.1",
+    "sass": "^1.86.0"
   }
 }

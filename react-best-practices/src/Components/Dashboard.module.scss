@@ -1,0 +1,45 @@
+.dashboard-container {
+    min-height: 100vh;
+    
+    .dashboard-header {
+      padding: 20px;
+      background-color: #f7f7fa;
+      border-bottom: 1px solid #e5e5ea;
+      
+      h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: #3c3c3c;
+      }
+    }
+    
+    .dashboard-content {
+      padding: 20px;
+      
+      h2 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        color: #575757;
+      }
+    }
+    
+    .chart-grid {
+      margin-bottom: 40px;
+      
+      .chart-grid-item {
+        margin-bottom: 20px;
+        padding: 0 10px;
+      }
+    }
+    
+    // Utility classes
+    .mb-4 {
+      margin-bottom: 20px;
+    }
+    
+    .mt-4 {
+      margin-top: 20px;
+    }
+  }
