@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Header, Content, Grid, Row, Col } from 'rsuite';
-import UserList from './UserList';
 import ChartCard from './ChartCard';
 import ChartDetail from './ChartDetail';
 import { getChartData } from '../Services/ChartData';
@@ -39,7 +38,7 @@ const availableCharts: ChartInfo[] = [
 ];
 
 const Dashboard: React.FC = () => {
-  const [chartsModulesLoaded, setChartsModulesLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedChart, setSelectedChart] = useState<ChartInfo | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -56,9 +55,10 @@ const Dashboard: React.FC = () => {
         exporting.default(Highcharts);
         exportData.default(Highcharts);
         
-        setChartsModulesLoaded(true);
+        setIsLoading(false);
       } catch (error) {
         console.error('Failed to load Highcharts modules:', error);
+        setIsLoading(false);
       }
     };
     
@@ -87,7 +87,7 @@ const Dashboard: React.FC = () => {
             </Col>
           </Row>
           <Row className={styles.chartGrid}>
-            {availableCharts.map((chart) => (
+            {!isLoading && availableCharts.map((chart) => (
               <Col xs={24} sm={24} md={12} lg={12} key={chart.id} className={styles.chartGridItem}>
                 <ChartCard 
                   title={chart.title} 

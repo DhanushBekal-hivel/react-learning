@@ -13,19 +13,19 @@ const ChartCard: React.FC<ChartCardProps> = ({ title, chartOptions, onCardClick 
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (chartRef.current) {
+    let chart: Highcharts.Chart | undefined;
+    // Store current ref value to use in cleanup
+    const currentChartRef = chartRef.current;
+    
+    if (currentChartRef) {
       // Create chart when component mounts
-      Highcharts.chart(chartRef.current, chartOptions);
+      chart = Highcharts.chart(currentChartRef, chartOptions);
     }
     
     // Clean up chart when component unmounts
     return () => {
-      if (chartRef.current) {
-        // Use type assertion to avoid the TypeScript error
-        const chart = Highcharts.charts.find(c => c && (c as any).renderTo === chartRef.current);
-        if (chart) {
-          chart.destroy();
-        }
+      if (chart) {
+        chart.destroy();
       }
     };
   }, [chartOptions]);
