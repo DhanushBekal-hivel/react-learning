@@ -10,11 +10,6 @@ import styles from './Dashboard.module.scss';
 // Import only the base Highcharts
 import Highcharts from 'highcharts';
 
-const users = [
-  { id: 1, name: 'John Doe', email: 'john@example.com' },
-  { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-];
-
 // Define available charts
 const availableCharts: ChartInfo[] = [
   {
@@ -93,7 +88,7 @@ const Dashboard: React.FC = () => {
           </Row>
           <Row className={styles.chartGrid}>
             {availableCharts.map((chart) => (
-              <Col xs={24} sm={12} lg={6} key={chart.id} className={styles.chartGridItem}>
+              <Col xs={24} sm={24} md={12} lg={12} key={chart.id} className={styles.chartGridItem}>
                 <ChartCard 
                   title={chart.title} 
                   chartOptions={getChartData(chart.type)}
@@ -101,12 +96,6 @@ const Dashboard: React.FC = () => {
                 />
               </Col>
             ))}
-          </Row>
-          <Row className={styles.mt4}>
-            <Col xs={24}>
-              <h2>Active Users</h2>
-              <UserList users={users} />
-            </Col>
           </Row>
         </Grid>
       </Content>

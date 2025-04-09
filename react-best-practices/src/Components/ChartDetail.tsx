@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Modal, Button } from 'rsuite';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
@@ -12,9 +12,6 @@ interface ChartDetailProps {
 }
 
 const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, onClose }) => {
-  // Add a chartComponentRef to properly handle the chart instance
-  const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
-  
   // Apply additional options for the detailed view
   const detailedOptions: Highcharts.Options = {
     ...chartOptions,
@@ -31,16 +28,6 @@ const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, on
     exporting: { enabled: true }
   };
 
-  // Ensure chart is properly destroyed when component unmounts
-  useEffect(() => {
-    return () => {
-      const chart = chartComponentRef.current?.chart;
-      if (chart) {
-        chart.destroy();
-      }
-    };
-  }, []);
-
   return (
     <Modal full open={open} onClose={onClose} className={styles.chartDetailModal}>
       <Modal.Header>
@@ -52,7 +39,6 @@ const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, on
             highcharts={Highcharts}
             options={detailedOptions}
             containerProps={{ className: styles.chartDetail }}
-            ref={chartComponentRef}
           />
         </div>
       </Modal.Body>
