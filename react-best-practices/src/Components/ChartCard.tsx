@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Panel } from 'rsuite';
 import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import './ChartCard.module.scss';
+import styles from './ChartCard.module.scss';
 
 interface ChartCardProps {
   title: string;
@@ -11,20 +10,35 @@ interface ChartCardProps {
 }
 
 const ChartCard: React.FC<ChartCardProps> = ({ title, chartOptions, onCardClick }) => {
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chartRef.current) {
+      // Create chart when component mounts
+      Highcharts.chart(chartRef.current, chartOptions);
+    }
+    
+    // Clean up chart when component unmounts
+    return () => {
+      if (chartRef.current) {
+        // Use type assertion to avoid the TypeScript error
+        const chart = Highcharts.charts.find(c => c && (c as any).renderTo === chartRef.current);
+        if (chart) {
+          chart.destroy();
+        }
+      }
+    };
+  }, [chartOptions]);
+
   return (
     <Panel 
-      className="chart-card" 
+      className={styles.chartCard} 
       header={title} 
       bordered 
       shaded 
       onClick={onCardClick}
     >
-      <div className="chart-preview">
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={chartOptions}
-        />
-      </div>
+      <div ref={chartRef} className={styles.chartPreview}></div>
     </Panel>
   );
 };

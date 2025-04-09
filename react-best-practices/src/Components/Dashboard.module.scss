@@ -1,7 +1,7 @@
-.dashboard-container {
+.dashboardContainer {
     min-height: 100vh;
     
-    .dashboard-header {
+    .dashboardHeader {
       padding: 20px;
       background-color: #f7f7fa;
       border-bottom: 1px solid #e5e5ea;
@@ -14,7 +14,7 @@
       }
     }
     
-    .dashboard-content {
+    .dashboardContent {
       padding: 20px;
       
       h2 {
@@ -25,21 +25,21 @@
       }
     }
     
-    .chart-grid {
+    .chartGrid {
       margin-bottom: 40px;
       
-      .chart-grid-item {
+      .chartGridItem {
         margin-bottom: 20px;
         padding: 0 10px;
       }
     }
     
     // Utility classes
-    .mb-4 {
+    .mb4 {
       margin-bottom: 20px;
     }
     
-    .mt-4 {
+    .mt4 {
       margin-top: 20px;
     }
   }

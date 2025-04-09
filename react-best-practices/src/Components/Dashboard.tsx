@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Header, Content, Grid, Row, Col } from 'rsuite';
 import UserList from './UserList';
 import ChartCard from './ChartCard';
 import ChartDetail from './ChartDetail';
 import { getChartData } from '../Services/ChartData';
 import { ChartInfo } from '../Types/Chart';
-import './Dashboard.module.scss';
+import styles from './Dashboard.module.scss';
 
-// Import Highcharts modules
+// Import only the base Highcharts
 import Highcharts from 'highcharts';
-import HighchartsMore from 'highcharts/highcharts-more';
-import HighchartsExporting from 'highcharts/modules/exporting';
-import HighchartsExportData from 'highcharts/modules/export-data';
-
-// Initialize Highcharts modules
-HighchartsMore(Highcharts);
-HighchartsExporting(Highcharts);
-HighchartsExportData(Highcharts);
 
 const users = [
   { id: 1, name: 'John Doe', email: 'john@example.com' },
@@ -52,8 +44,31 @@ const availableCharts: ChartInfo[] = [
 ];
 
 const Dashboard: React.FC = () => {
+  const [chartsModulesLoaded, setChartsModulesLoaded] = useState(false);
   const [selectedChart, setSelectedChart] = useState<ChartInfo | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // Load Highcharts modules
+  useEffect(() => {
+    // Use dynamic imports for Highcharts modules
+    const loadHighchartsModules = async () => {
+      try {
+        const highchartsMore = await import('highcharts/highcharts-more');
+        const exporting = await import('highcharts/modules/exporting');
+        const exportData = await import('highcharts/modules/export-data');
+        
+        highchartsMore.default(Highcharts);
+        exporting.default(Highcharts);
+        exportData.default(Highcharts);
+        
+        setChartsModulesLoaded(true);
+      } catch (error) {
+        console.error('Failed to load Highcharts modules:', error);
+      }
+    };
+    
+    loadHighchartsModules();
+  }, []);
 
   const handleChartClick = (chart: ChartInfo) => {
     setSelectedChart(chart);
@@ -65,20 +80,20 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <Container className="dashboard-container">
-      <Header className="dashboard-header">
+    <Container className={styles.dashboardContainer}>
+      <Header className={styles.dashboardHeader}>
         <h1>Analytics Dashboard</h1>
       </Header>
-      <Content className="dashboard-content">
+      <Content className={styles.dashboardContent}>
         <Grid fluid>
-          <Row className="mb-4">
+          <Row className={styles.mb4}>
             <Col xs={24}>
               <h2>Key Metrics</h2>
             </Col>
           </Row>
-          <Row className="chart-grid">
+          <Row className={styles.chartGrid}>
             {availableCharts.map((chart) => (
-              <Col xs={24} sm={12} lg={6} key={chart.id} className="chart-grid-item">
+              <Col xs={24} sm={12} lg={6} key={chart.id} className={styles.chartGridItem}>
                 <ChartCard 
                   title={chart.title} 
                   chartOptions={getChartData(chart.type)}
@@ -87,7 +102,7 @@ const Dashboard: React.FC = () => {
               </Col>
             ))}
           </Row>
-          <Row className="mt-4">
+          <Row className={styles.mt4}>
             <Col xs={24}>
               <h2>Active Users</h2>
               <UserList users={users} />
