@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Header, Content, Grid, Row, Col } from 'rsuite';
+import { Container, Header, Content, Grid, Row, Col} from 'rsuite';
 import ChartCard from './ChartCard';
 import ChartDetail from './ChartDetail';
 import { getChartData } from '../Services/ChartData';
 import { ChartInfo } from '../Types/Chart';
 import styles from './Dashboard.module.scss';
 
-// Import only the base Highcharts
 import Highcharts from 'highcharts';
-
-// Define available charts
 const availableCharts: ChartInfo[] = [
   {
     id: 'sales-trend',
@@ -37,10 +34,20 @@ const availableCharts: ChartInfo[] = [
   }
 ];
 
+// Add this near your other interfaces/types
+interface ChartData {
+  data: any[]; // Replace 'any' with your specific data structure
+  columns: {
+    key: string;
+    label: string;
+  }[];
+}
+
 const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedChart, setSelectedChart] = useState<ChartInfo | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [showTable, setShowTable] = useState(false);
 
   // Load Highcharts modules
   useEffect(() => {
@@ -91,7 +98,7 @@ const Dashboard: React.FC = () => {
               <Col xs={24} sm={24} md={12} lg={12} key={chart.id} className={styles.chartGridItem}>
                 <ChartCard 
                   title={chart.title} 
-                  chartOptions={getChartData(chart.type)}
+                  chartOptions={getChartData(chart.type).chartOptions}
                   onCardClick={() => handleChartClick(chart)} 
                 />
               </Col>
@@ -104,8 +111,11 @@ const Dashboard: React.FC = () => {
         <ChartDetail
           open={modalOpen}
           title={selectedChart.title}
-          chartOptions={getChartData(selectedChart.type)}
+          chartOptions={getChartData(selectedChart.type).chartOptions}
           onClose={handleCloseModal}
+          showTable={showTable}
+          setShowTable={setShowTable}
+          tableData={getChartData(selectedChart.type).tableData}
         />
       )}
     </Container>

@@ -14,15 +14,12 @@ const ChartCard: React.FC<ChartCardProps> = ({ title, chartOptions, onCardClick 
 
   useEffect(() => {
     let chart: Highcharts.Chart | undefined;
-    // Store current ref value to use in cleanup
     const currentChartRef = chartRef.current;
     
     if (currentChartRef) {
-      // Create chart when component mounts
       chart = Highcharts.chart(currentChartRef, chartOptions);
     }
     
-    // Clean up chart when component unmounts
     return () => {
       if (chart) {
         chart.destroy();

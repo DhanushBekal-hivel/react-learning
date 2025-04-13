@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Modal, Button } from 'rsuite';
+import { Modal, Button, Toggle, Table } from 'rsuite';
 import Highcharts from 'highcharts';
 import styles from './ChartDetail.module.scss';
 
@@ -8,19 +8,26 @@ interface ChartDetailProps {
   title: string;
   chartOptions: Highcharts.Options;
   onClose: () => void;
+  showTable: boolean;
+  setShowTable: (show: boolean) => void;
+  tableData: {
+    data: any[];
+    columns: {
+      key: string;
+      label: string;
+    }[];
+  };
 }
 
-const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, onClose }) => {
+const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, onClose, showTable, setShowTable, tableData }) => {
   const chartRef = useRef<HTMLDivElement>(null);
+
   
   useEffect(() => {
     let chart: Highcharts.Chart | undefined;
-    // Store current ref value to use in cleanup
     const currentChartRef = chartRef.current;
-    
-    // Create chart when component is mounted and visible
-    if (open && currentChartRef) {
-      // Prepare detailed options
+
+    if (open && currentChartRef && !showTable) {
       const detailedOptions: Highcharts.Options = {
         ...chartOptions,
         chart: {
@@ -64,29 +71,49 @@ const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, on
         exporting: { enabled: true }
       };
       
-      // Create the chart
       chart = Highcharts.chart(detailedOptions);
     }
     
-    // Clean up function to destroy chart when component unmounts
     return () => {
       if (chart) {
         chart.destroy();
       }
     };
-  }, [open, chartOptions, title]);
+  }, [open, chartOptions, title, showTable]);
 
   return (
     <Modal full open={open} onClose={onClose} className={styles.chartDetailModal}>
       <Modal.Header>
         <Modal.Title>{title} - Detailed View</Modal.Title>
+        <Toggle 
+          checked={showTable}
+          onChange={setShowTable}
+          checkedChildren="Table"
+          unCheckedChildren="Chart"
+        />
       </Modal.Header>
       <Modal.Body>
         <div className={styles.chartDetailContainer}>
-          <div 
-            ref={chartRef} 
-            className={styles.chartDetail}
-          ></div>
+          {showTable ? (
+            <Table
+              height={500}
+              data={tableData.data}
+              bordered
+              cellBordered
+            >
+              {tableData.columns.map(column => (
+                <Table.Column key={column.key} flexGrow={1}>
+                  <Table.HeaderCell>{column.label}</Table.HeaderCell>
+                  <Table.Cell dataKey={column.key} />
+                </Table.Column>
+              ))}
+            </Table>
+          ) : (
+            <div 
+              ref={chartRef} 
+              className={styles.chartDetail}
+            ></div>
+          )}
         </div>
       </Modal.Body>
       <Modal.Footer>

@@ -12,7 +12,7 @@ const Chart: React.FC<ChartProps> = ({ type }) => {
 
   useEffect(() => {
     if (chartContainer.current) {
-      const chartOptions = getChartData(type);
+      const { chartOptions } = getChartData(type);
       Highcharts.chart(chartContainer.current, chartOptions);
     }
   }, [type]);
