@@ -6,6 +6,7 @@ import styles from './ChartDetail.module.scss';
 interface ChartDetailProps {
   open: boolean;
   title: string;
+  description: string;
   chartOptions: Highcharts.Options;
   onClose: () => void;
   showTable: boolean;
@@ -19,7 +20,7 @@ interface ChartDetailProps {
   };
 }
 
-const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, onClose, showTable, setShowTable, tableData }) => {
+const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, description, chartOptions, onClose, showTable, setShowTable, tableData }) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   
@@ -115,6 +116,7 @@ const ChartDetail: React.FC<ChartDetailProps> = ({ open, title, chartOptions, on
             ></div>
           )}
         </div>
+        <p style={{ marginTop: '10px' }}>{description}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button appearance="primary" onClick={onClose}>

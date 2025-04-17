@@ -5,11 +5,12 @@ import styles from './ChartCard.module.scss';
 
 interface ChartCardProps {
   title: string;
+  description: string;
   chartOptions: Highcharts.Options;
   onCardClick: () => void;
 }
 
-const ChartCard: React.FC<ChartCardProps> = ({ title, chartOptions, onCardClick }) => {
+const ChartCard: React.FC<ChartCardProps> = ({ title, description, chartOptions, onCardClick }) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ title, chartOptions, onCardClick 
       onClick={onCardClick}
     >
       <div ref={chartRef} className={styles.chartPreview}></div>
+      <p style={{ marginTop: '10px' }}>{description}</p>
     </Panel>
   );
 };
